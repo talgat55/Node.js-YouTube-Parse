@@ -1,31 +1,34 @@
 import express from "express";
 import templating from "consolidate";
 import bodyParser from "body-parser";
+import async from "async";
 import fs from 'fs';
+import path from 'path';
 import ytdl from 'ytdl-core';
 import ffmpeg from 'ffmpeg';
 import youtube from 'youtube-search';
 import config from './../config/config.json';
 import indexrouter from './../routes/index';
-
-
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
-
-
 app.engine("twig", templating.twig);
+
 
 app.set("view engine", "twig");
 app.set("views", __dirname + "/../client/views");
 
 
 /*  Routes */
-app.get("/", indexrouter);
+app.get("/", indexrouter.index);
 
-
+let resultvideo = require("./../components/youtube")("node.js", config.api, youtube, async, ytdl, fs);
+if (resultvideo) {
+    let resultmp3 = require("./../components/mp3")(async, ffmpeg, fs, path);
+}
+//console.log("RESULT:" + result)
 /*
 ytdl(pathvideo)
     .pipe(fs.createWriteStream(namefile));
@@ -66,7 +69,7 @@ function dlyt(path, convertToMp3) {
                     .saveToFile(fileName.replace(fileEnd, '.mp3'), function(stdout, stderr) {
                         console.log('----- file converted successfully! -----');
 
-                    });
+                    });    
                 fs.unlink(fileName, function(err) {
                     console.log("----- Removing temporary file: " + fileName);
                 });
@@ -76,7 +79,7 @@ function dlyt(path, convertToMp3) {
 }
 
 dlyt("https://www.youtube.com/watch?v=8_gcTR6fn94", true);
-
+    
 
 */
 
