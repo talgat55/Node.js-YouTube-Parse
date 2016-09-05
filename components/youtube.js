@@ -1,4 +1,4 @@
-module.exports = (searchkey, configapi, youtube, async, ytdl, fs) => {
+module.exports = (searchkey, configapi, youtube, async, ytdl, fs, sugar) => {
 
     try {
 
@@ -16,7 +16,9 @@ module.exports = (searchkey, configapi, youtube, async, ytdl, fs) => {
                 //  pathvideo = 'https://www.youtube.com/watch?v=m55Qu7Z6q9w'; 
                 let pathvideo = res.link;
                 if (pathvideo.substr(24, 1) == "w") {
-                    let namefile = res.title + ".mp4";
+                    let title = res.title;
+                    let paramet = sugar.String.parameterize(title);
+                    let namefile = paramet + ".mp4";
                     let fullpath = __dirname + "/../video/" + namefile;
 
                     ytdl(pathvideo)

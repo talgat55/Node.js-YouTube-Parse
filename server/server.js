@@ -7,8 +7,13 @@ import path from 'path';
 import ytdl from 'ytdl-core';
 import ffmpeg from 'ffmpeg';
 import youtube from 'youtube-search';
+import sugar from 'sugar';
 import config from './../config/config.json';
 import indexrouter from './../routes/index';
+
+
+
+let rightpath = path.parse(__dirname);
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,10 +29,11 @@ app.set("views", __dirname + "/../client/views");
 /*  Routes */
 app.get("/", indexrouter.index);
 
-let resultvideo = require("./../components/youtube")("node.js", config.api, youtube, async, ytdl, fs);
-if (resultvideo) {
-    let resultmp3 = require("./../components/mp3")(async, ffmpeg, fs, path);
+let resultvideo = require("./../components/youtube")("node.js", config.api, youtube, async, ytdl, fs, sugar);
+/*if (resultvideo) {
+    let resultmp3 = require("./../components/mp3")(async, ffmpeg, fs, rightpath);
 }
+*/
 //console.log("RESULT:" + result)
 /*
 ytdl(pathvideo)
