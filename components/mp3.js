@@ -20,7 +20,8 @@ module.exports = (async, ffmpeg, fs, dirname) => {
                 process.then(function(video) {
                     // Callback mode
                     console.log("true convert mp3");
-                    video.fnExtractSoundToMP3(rightfilename.replace(fileEnd, '.mp3'), function(error, file) {
+                    let pathaudio = dirname.dir + "/mp3"+ "\/" + res;
+                    video.fnExtractSoundToMP3(pathaudio.replace(fileEnd, '.mp3'), function(error, file) {
                         if (!error)
                             console.log('Audio file: ' + file);
                         else
